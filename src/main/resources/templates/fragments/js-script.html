@@ -1,0 +1,22 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const seats = document.querySelectorAll('.seat.free');
+    const selectedSeatsInput = document.getElementById('selectedSeats');
+
+    seats.forEach(seat => {
+      seat.addEventListener('click', function () {
+        if (this.classList.contains('selected')) {
+          this.classList.remove('selected');
+        } else {
+          this.classList.add('selected');
+        }
+
+        // Обновляем скрытое поле с ID выбранных мест
+        const selectedSeatIds = Array.from(document.querySelectorAll('.seat.selected'))
+                .map(seat => seat.getAttribute('data-seat-id'));
+
+        selectedSeatsInput.value = selectedSeatIds.join(',');
+      });
+    });
+  });
+</script>

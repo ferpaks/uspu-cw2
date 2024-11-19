@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Добавление города')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Добавить город</h1>
+
+    <form th:action="@{/cities}" th:object="${city}" method="post"
+          class="d-flex flex-column justify-content-center align-items-center">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Название города" required>
+            <label for="name">Название города</label>
+        </div>
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Добавить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

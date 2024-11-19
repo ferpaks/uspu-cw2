@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Информация о  зале')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1 th:text="'Зал «' + ${hall.name} + '»'">Название зала</h1>
+    <p>
+        <strong>Кинотеатр: </strong><a th:href="@{/cinemas/{link}(link=${hall.cinema.linkName})}" th:text="${cinemaName}">Название кинотеатра</a>, <a th:href="@{/cities/{id}(id=${hall.cinema.address.city.id})}" th:text="${hall.cinema.address.city.name}">Город</a>
+    </p>
+    <p><strong>Количество мест:</strong> <span th:text="${totalSeats}">0</span></p>
+    <div>
+        <h2>Схема зала</h2>
+        <div th:each="entry : ${seatsGroupedByRow}">
+            <div class="seat-row">
+                <span class="seat-row-label" th:text="'Ряд ' + ${entry.key}"></span>
+                <span th:each="seat : ${entry.value}">
+                <div class="seat" th:text="${seat.seatNumber}"></div>
+            </span>
+            </div>
+        </div>
+    </div>
+
+    <form th:action="@{/halls/{id}(id=${hall.id})}" method="POST" class="gap-2 d-flex justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="DELETE">
+        <a th:href="@{/halls/{id}/edit(id=${hall.id})}" class="btn btn-primary">Изменить</a>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

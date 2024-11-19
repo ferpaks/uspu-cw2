@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/html-head :: head('Смена роли пользователя')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Сменить роль пользователя</h1>
+    <form th:action="@{/users/{username}/change-role(username=${user.username})}" method="post">
+        <label for="role">Выберите новую роль:</label>
+        <select id="role" name="newRole" class="form-select mb-3">
+            <option th:each="role : ${roles}" th:value="${role}" th:text="${role.name}" th:selected="${role == user.role}"></option>
+        </select>
+
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Сменить роль</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

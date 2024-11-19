@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение города')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Изменить город</h1>
+
+    <form th:action="@{/cities/{id}(id=${city.id})}" th:object="${city}" method="POST"
+          class="d-flex flex-column justify-content-center align-items-center">
+        <div class="form-floating mb-3">
+            <input type="hidden" name="_method" value="PUT">
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" required>
+            <label for="name">Название города</label>
+        </div>
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

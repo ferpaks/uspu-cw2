@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение улицы')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Изменить улицу</h1>
+
+    <p th:if="${#lists.isEmpty(cities) && #lists.isEmpty(streetTypes)}">Не получится ничего изменить. Не хватает важных составляющих.</p>
+    <form th:action="@{/streets/{id}(id=${street.id})}" th:object="${street}" method="post"
+          th:if="${!#lists.isEmpty(cities) && !#lists.isEmpty(streetTypes)}"
+          class="d-flex flex-column justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="input-group d-flex align-items-stretch mb-3">
+            <div class="col-3 col-md-3 col-lg-2">
+                <select class="form-select h-100"  id="streetType" name="typeId" aria-label="Тип улицы">
+                    <option th:each="type : ${streetTypes}" th:value="${type.id}" th:text="${type.fullName}"></option>
+                </select>
+            </div>
+            <div class="col-9 col-md-5 col-lg-4 form-floating">
+                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Название улицы"
+                       required>
+                <label for="name">Название улицы</label>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Город:</span>
+            <select class="form-select" id="cityId" name="cityId" required aria-label="Город">
+                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+            </select>
+        </div>
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

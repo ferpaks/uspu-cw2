@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Добавление улицы')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Добавить улицу</h1>
+
+    <div th:if="${#lists.isEmpty(cities) || #lists.isEmpty(streetTypes)}">
+        <p>Сперва добавьте хотя бы один <a th:href="@{/cities/new}">город</a> или <a th:href="@{/street-types/new}">тип
+            улицы</a>.</p>
+    </div>
+
+    <form th:action="@{/streets}" th:object="${street}" method="post"
+          th:if="${!#lists.isEmpty(cities) && !#lists.isEmpty(streetTypes)}"
+          class="d-flex flex-column justify-content-center align-items-center">
+        <div class="input-group d-flex align-items-stretch mb-3">
+            <div class="col-3 col-md-3 col-lg-2">
+                <select class="form-select h-100" id="streetType" name="typeId" aria-label="Тип улицы">
+                    <option th:each="type : ${streetTypes}" th:value="${type.id}" th:text="${type.fullName}"></option>
+                </select>
+            </div>
+            <div class="col-9 col-md-5 col-lg-4 form-floating">
+                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Название улицы"
+                       required>
+                <label for="name">Название улицы</label>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Город:</span>
+            <select class="form-select" id="cityId" name="cityId" required aria-label="Город">
+                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+            </select>
+        </div>
+        <div class="form-text mb-3">
+            <a th:href="@{/cities/new}">Добавить город</a>
+        </div>
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Добавить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

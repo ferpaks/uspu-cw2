@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Информация о кинотеатре')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Информация о кинотеатре</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Город</th>
+            <th>Название</th>
+            <th>Статус</th>
+            <th>Менеджер</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a th:href="@{/cities/{id}(id=${cinema.address.city.id})}" th:text="${cinema.address.city.name}">Название города</a>
+            </td>
+            <td><a th:href="@{/cinemas/{link}(link=${cinema.linkName})}" th:text="${cinema.name}"></a></td>
+            <td th:text="${cinema.status.name}"></td>
+            <td><a th:href="@{/users/{id}(id=${cinema.manager.id})}" th:text="${cinema.manager.username}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/cinemas/{link}(link=${cinema.linkName})}" method="POST" class="gap-2 d-flex justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="DELETE">
+        <a th:href="@{/cinemas/{link}/edit(link=${cinema.linkName})}" class="btn btn-primary">Изменить</a>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

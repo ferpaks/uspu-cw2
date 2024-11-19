@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/html-head :: head('Информация о пользователе')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1 th:text="'Информация о ' +  ${user.username}"></h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Роль</th>
+                <th>Баланс</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.role.name}"></td>
+                <td th:text="${user.balanceInRubles} + '₽'"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/users/{link}/change-role(link=${user.username})}" th:if="${#authentication.principal.username != user.username and #authorization.expression('hasRole(''ROLE_Администратор'')')}" class="btn btn-primary">Изменить роль</a>
+    <a th:href="@{/users/{link}/change-balance(link=${user.username})}" th:if="${#authorization.expression('hasRole(''ROLE_Администратор'')')}" class="btn btn-primary">Изменить баланс</a>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

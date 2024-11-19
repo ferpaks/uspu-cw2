@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container container-fluid d-flex justify-content-end">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/index}">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/movies}">Фильмы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/sessions}">Расписание</a>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${#authorization.expression('hasRole(''ROLE_Пользователь'')')}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Пользовательское
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/cinema/bookings">Бронирования</a></li>
+                            <li><a class="dropdown-item" href="/cinema/cinemas">Кинотеатры</a></li>
+                            <li><a class="dropdown-item" href="/cinema/users">Пользователи</a></li>
+                            <li><a class="dropdown-item" href="/cinema/sessions">Сеансы</a></li>
+                            <li><a class="dropdown-item" href="/cinema/movies">Фильмы</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${#authorization.expression('hasRole(''ROLE_Менеджер'')')}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Менеджерское
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/cinema/bookings">Бронирования</a></li>
+                            <li><a class="dropdown-item" href="/cinema/halls">Залы</a></li>
+                            <li><a class="dropdown-item" href="/cinema/cinemas">Кинотеатры</a></li>
+                            <li><a class="dropdown-item" href="/cinema/users">Пользователи</a></li>
+                            <li><a class="dropdown-item" href="/cinema/sessions">Сеансы</a></li>
+                            <li><a class="dropdown-item" href="/cinema/movies">Фильмы</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${#authorization.expression('hasRole(''ROLE_Администратор'')')}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Админское
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/cinema/addresses">Адреса</a></li>
+                            <li><a class="dropdown-item" href="/cinema/bookings">Бронирования</a></li>
+                            <li><a class="dropdown-item" href="/cinema/cities">Города</a></li>
+                            <li><a class="dropdown-item" href="/cinema/halls">Залы</a></li>
+                            <li><a class="dropdown-item" href="/cinema/cinemas">Кинотеатры</a></li>
+                            <li><a class="dropdown-item" href="/cinema/users">Пользователи</a></li>
+                            <li><a class="dropdown-item" href="/cinema/sessions">Сеансы</a></li>
+                            <li><a class="dropdown-item" href="/cinema/street-types">Типы улиц</a></li>
+                            <li><a class="dropdown-item" href="/cinema/streets">Улицы</a></li>
+                            <li><a class="dropdown-item" href="/cinema/movies">Фильмы</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/login}">Войти</a>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false"
+                           sec:authentication="name">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-item" th:text="${userBalance} + ' ₽'">Профиль</li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Выйти</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,14 @@
+<script>
+  // Автоматическое отображение модальных окон при наличии сообщений
+  document.addEventListener('DOMContentLoaded', function () {
+    const successModal = document.getElementById('successModal');
+    const errorModal = document.getElementById('errorModal');
+
+    if (successModal) {
+      new bootstrap.Modal(successModal).show();
+    }
+    if (errorModal) {
+      new bootstrap.Modal(errorModal).show();
+    }
+  });
+</script>

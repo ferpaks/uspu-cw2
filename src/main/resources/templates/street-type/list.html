@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Типы улиц')}"></head>
+
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Типы улиц</h1>
+
+    <div th:replace="~{fragments/html-modal-error :: div.modal}"></div>
+    <div th:replace="~{fragments/html-modal-success :: div.modal}"></div>
+
+    <div th:if="${#lists.isEmpty(streetTypes)}">
+        <p>Список типов улиц пуст.</p>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Полное название</th>
+            <th>Сокращённое название</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="streetType : ${streetTypes}">
+            <td><a th:href="@{/street-types/{id}(id=${streetType.id})}" th:text="${streetType.fullName}">Полное название</a></td>
+            <td th:text="${streetType.shortName}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+<script th:replace="~{fragments/js-modal :: script}"></script>
+</body>
+</html>

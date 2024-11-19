@@ -1,0 +1,59 @@
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1; /* Заставляет основной контент занимать оставшееся пространство */
+    }
+
+     .seat-row {
+         display: flex;
+         align-items: center;
+         margin-bottom: 10px;
+     }
+
+    .seat-row-label {
+        margin-right: 15px;
+        font-weight: bold;
+        width: 60px;
+    }
+
+    .seat {
+        width: 30px;
+        height: 30px;
+        margin: 2px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 5px;
+        border: 1px solid #000;
+        cursor: pointer;
+    }
+
+    .seat.free {
+        background-color: #90ee90; /* Зеленый */
+    }
+
+    .seat.booked {
+        background-color: #ff6666; /* Красный */
+        cursor: not-allowed;
+    }
+
+    .seat.reserved {
+        background-color: #ffa500; /* Оранжевый */
+        cursor: not-allowed;
+    }
+
+    .seat.unavailable {
+        background-color: #d3d3d3; /* Серый */
+        cursor: not-allowed;
+    }
+
+    .seat.selected {
+        background-color: #4caf50; /* Темно-зеленый */
+    }
+
+</style>

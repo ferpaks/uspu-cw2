@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/html-head :: head('Список доступных функций')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Список доступных функций</h1>
+    <h2>Функции гостя</h2>
+    <ul>
+        <li>Регистрация и вход в учётную запись.</li>
+        <li>Просмотр некоторых страниц. Например, <em>этой</em>, главной, об идущих фильмах, о расписании.</li>
+    </ul>
+    <h2>Функции пользователя</h2>
+    <ul>
+        <li>Просмотр своей учётной записи.</li>
+    </ul>
+    <h2>Функции сотрудника</h2>
+    <h2>Функции менеджера</h2>
+    <h2>Функции администратора</h2>
+    <h3>Работа с пользователями</h3>
+    <ul>
+        <li>Смена роли любого пользователя, кроме себя.</li>
+        <li>Просмотр учётной записи любого пользователя.</li>
+    </ul>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

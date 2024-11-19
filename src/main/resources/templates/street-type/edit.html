@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение типа улицы')}"></head>
+
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Изменить тип улицы</h1>
+    <form th:action="@{/street-types/{id}(id=${streetType.id})}" th:object="${streetType}" method="post"
+          class="d-flex flex-column justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="PUT">
+
+        <div class="form-floating mb-3 col-12 col-md-8 col-lg-6">
+            <input type="text" class="form-control" id="fullName" name="fullName" th:field="*{fullName}" placeholder="Полное обозначение" required>
+            <label for="fullName">Полное обозначение</label>
+        </div>
+        <div class="form-floating mb-3 col-12 col-md-8 col-lg-6">
+            <input type="text" class="form-control" id="shortName" name="shortName" th:field="*{shortName}" placeholder="Сокращённое обозначение" required>
+            <label for="shortName">Сокращённое обозначение</label>
+        </div>
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

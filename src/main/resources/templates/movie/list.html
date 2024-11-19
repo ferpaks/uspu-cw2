@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Список фильмов')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Список фильмов</h1>
+
+    <div th:replace="~{fragments/html-modal-error :: div.modal}"></div>
+    <div th:replace="~{fragments/html-modal-success :: div.modal}"></div>
+
+    <div th:if="${#lists.isEmpty(movies)}">
+        <p>Список фильмов пуст.</p>
+    </div>
+
+    <div class="d-flex justify-content-center" th:if="${#authorization.expression('hasRole(''ROLE_Администратор'')')}">
+        <a th:href="@{/movies/new}" class="btn btn-primary">Добавить фильм</a>
+    </div>
+
+    <table class="table" th:if="${!#lists.isEmpty(movies)}">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Продолжительность</th>
+            <th>Жанры</th>
+            <th>Возрастной рейтинг</th>
+            <th>Стоимость билета</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="movie : ${movies}">
+            <td><a th:href="@{/movies/{link}(link=${movie.linkTitle})}" th:text="${movie.title}">Название фильма</a></td>
+            <td th:text="${movie.description}"></td>
+            <td th:text="${movie.getFormattedDuration()}"></td>
+
+            <td th:if="${movie.genres != null and !movie.genres.isEmpty()}">
+                <span th:each="genre, iterStat : ${movie.genres}"
+                      th:text="${genre.name + (iterStat.last ? '.' : ', ')}">Жанр</span>
+            </td>
+            <td th:if="${movie.genres == null or movie.genres.isEmpty()}" th:text="'Жанры не указаны.'">Жанры не указаны.</td>
+
+            <td th:text="${movie.rating.name}"></td>
+            <td th:text="${movie.basePriceInRubles} + ' ₽'"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<div th:insert="~{fragments/html-footer :: footer}"></div>
+<script th:replace="~{fragments/js-modal :: script}"></script>
+</body>
+</html>

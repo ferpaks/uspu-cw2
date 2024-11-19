@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Список сеансов')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <div th:replace="~{fragments/html-modal-error :: div.modal}"></div>
+    <div th:replace="~{fragments/html-modal-success :: div.modal}"></div>
+
+    <div>
+        <h1>Список сеансов</h1>
+        <div th:if="${#lists.isEmpty(sessionsData)}">
+            <p th:if="${#authorization.expression('hasRole(''ROLE_Менеджер'')')}">Список ваших сеансов пуст.</p>
+            <p th:if="${#authorization.expression('hasRole(''ROLE_Администратор'')')}">Список сеансов пуст.</p>
+            <p th:if="${#authorization.expression('hasRole(''ROLE_Пользователь'')')}">Никаких сеансов не запланировано.</p>
+        </div>
+
+        <div class="d-flex justify-content-center" th:if="${#authorization.expression('hasRole(''ROLE_Менеджер'')') or #authorization.expression('hasRole(''ROLE_Администратор'')')}">
+            <a th:href="@{/sessions/new}" class="btn btn-primary">Добавить сеанс</a>
+        </div>
+
+        <table class="table" th:if="${!#lists.isEmpty(sessionsData)}">
+            <thead>
+            <tr>
+                <th>Фильм</th>
+                <th>Зал</th>
+                <th>Начало</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sessionData : ${sessionsData}">
+                <td><a th:href="@{/movies/{link}(link=${sessionData.movie.linkTitle})}"
+                       th:text="${sessionData.movie.title}"></a></td>
+                <td><a th:href="@{/halls/{id}(id=${sessionData.hall.id})}" th:text="${sessionData.hall.name}"></a>, <a th:href="@{/cinemas/{id}(id=${sessionData.hall.cinema.id})}" th:text="${sessionData.hall.cinema.name}"></a>, <a th:href="@{/cities/{id}(id=${sessionData.hall.cinema.address.city.id})}" th:text="${sessionData.hall.cinema.address.city.name}"></a></td>
+                <td><a th:href="@{/sessions/{id}(id=${sessionData.id})}"
+                       th:text="${sessionData.sessionStartTime.format(formatter)}"> </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+<script th:replace="~{fragments/js-modal :: script}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Информация об адресе')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Информация об адресе</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Город</th>
+            <th>Улица</th>
+            <th>Номер дома</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a th:href="@{/cities/{id}(id=${address.city})}" th:text="${address.city.name}">Название города</a>
+            </td>
+            <td><a th:href="@{/street-types/{id}(id=${address.street.type.id})}"
+                   th:text="${address.street.type.shortName}"></a> <a th:href="@{/streets/{id}(id=${address.street.id})}" th:text="${address.street.name}">Название
+                улицы</a></td>
+            <td><a th:text="${address.house}">Номер дома</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/addresses/{id}(id=${address.id})}" method="POST" class="gap-2 d-flex justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="DELETE">
+        <a th:href="@{/addresses/{id}/edit(id=${address.id})}" class="btn btn-primary">Изменить</a>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

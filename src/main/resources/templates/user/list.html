@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/html-head :: head('Список пользователей')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <div th:if="${#authorization.expression('hasRole(''ROLE_Администратор'')')}">
+    <h1>Список пользователей по ролям</h1>
+    <div th:each="entry : ${usersByRoles}">
+        <h2 th:text="${entry.key.name}"></h2>
+        <ul th:if="${!#lists.isEmpty(entry.value)}">
+            <li th:each="user : ${entry.value}">
+                <a th:href="@{/users/{username}(username=${user.username})}" th:text="${user.username}"></a>
+            </li>
+        </ul>
+        <p th:if="${#lists.isEmpty(entry.value)}">Нет пользователей с этой ролью.</p>
+    </div>
+    </div>
+
+    <div th:if="${!#authorization.expression('hasRole(''ROLE_Администратор'')')}">
+        <h1>Ваш профиль</h1>
+        <p>
+            <a th:href="@{/users/{username}(username=${#authentication.name})}" th:text="${#authentication.name}"></a>
+        </p>
+    </div>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+<script th:replace="~{fragments/js-modal :: script}"></script>
+</body>
+</html>

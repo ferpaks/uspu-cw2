@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Бронирование мест')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Бронирование мест</h1>
+    <form th:action="@{/sessions/{id}/bookings(id=${sessionData.id})}" method="post">
+        <input type="hidden" id="selectedSeats" name="selectedSeats" value="">
+
+        <div th:each="entry : ${seatsGroupedByRow}">
+            <div class="seat-row">
+                <span class="seat-row-label" th:text="'Ряд ' + ${entry.key}">Ряд</span>
+                <div th:each="seat : ${entry.value}">
+                    <div class="seat"
+                         th:classappend="${seat.status.name().toLowerCase()}"
+                         th:text="${seat.seatNumber}"
+                         th:attr="data-seat-id=${seat.id}"
+                         th:if="${seat.status != T(ferpaks.cinema.entity.SeatStatus).UNAVAILABLE}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Забронировать выбранные места</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

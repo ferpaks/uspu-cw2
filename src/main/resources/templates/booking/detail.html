@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Информация о бронировании')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Информация о бронировании</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Время бронирования</th>
+            <th>Статус бронирования</th>
+            <th>Статус оплаты</th>
+            <th>Стоимость билета</th>
+            <th>Название фильма</th>
+            <th>Место</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${booking.bookingTime.format(formatter)}"></td>
+            <td th:text="${booking.bookingStatus.name}"></td>
+            <td th:text="${booking.paymentStatus.name}"></td>
+            <td th:text="${booking.totalPriceInRubles}"></td>
+            <td th:text="${booking.session.movie.title}"></td>
+            <td th:text="${booking.seat.rowNumber + ' ряд, ' + booking.seat.seatNumber + ' место.'}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <form method="post" th:action="@{/bookings/{id}/pay(id=${booking.id})}">
+        <button type="submit" class="btn btn-primary">Оплатить</button>
+    </form>
+    <form method="post" th:action="@{/bookings/{id}/cancel(id=${booking.id})}">
+        <button type="submit" class="btn btn-danger">Отменить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

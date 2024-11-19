@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение адреса')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Изменить адрес</h1>
+
+    <form th:action="@{/addresses/{id}(id=${address.id})}" th:object="${address}" method="post">
+        <input type="hidden" name="_method" value="PUT">
+
+        <div class="form-floating col-12 mb-3">
+            <input type="text" class="form-control" id="house" th:field="*{house}" placeholder="Номер дома"
+                   required>
+            <label for="house">Номер дома</label>
+        </div>
+
+        <select class="form-select col-12 mb-3" aria-label="Улица" id="street" name="streetId">
+            <option th:each="street : ${streets}" th:value="${street.id}"
+                    th:text="${street.city.name + ', ' + street.type.shortName + ' ' + street.name}"
+                    th:selected="${street.id == address.street?.id}"></option>
+        </select>
+
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

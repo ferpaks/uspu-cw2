@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Список улиц')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Список улиц</h1>
+
+    <div th:replace="~{fragments/html-modal-error :: div.modal}"></div>
+    <div th:replace="~{fragments/html-modal-success :: div.modal}"></div>
+
+    <div th:if="${#lists.isEmpty(streets)}">
+        <p>Список улиц пуст.</p>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <a th:href="@{/streets/new}" class="btn btn-primary">Добавить улицу</a>
+    </div>
+
+    <table class="table" th:if="${!#lists.isEmpty(streets)}">
+        <thead>
+        <tr>
+            <th>Город</th>
+            <th>Улица</th>
+            <th>Тип улицы</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="street : ${streets}">
+            <td><a th:href="@{/cities/{id}(id=${street.city.id})}" th:text="${street.city.name}">Название города</a>
+            </td>
+            <td><a th:href="@{/streets/{id}(id=${street.id})}" th:text="${street.name}">Название улицы</a></td>
+            <td><a th:href="@{/street-types/{id}(id=${street.type.id})}" th:text="${street.type.fullName}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+<script th:replace="~{fragments/js-modal :: script}"></script>
+</body>
+</html>

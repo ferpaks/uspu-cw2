@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение зала')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <div th:if="${#authorization.expression('hasRole(''ROLE_Администратор'')')}">
+        <h1 th:text="'Изменить зал «' + ${hall.name} + '»'">Изменение зала</h1>
+        <form th:action="@{/halls/{id}(id=${hall.id})}" th:object="${hall}" method="post"
+              class="d-flex flex-column justify-content-center align-items-center">
+            <input type="hidden" name="_method" value="PUT">
+
+            <div class="form-floating col-12 mb-3">
+                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Название зала"
+                       required>
+                <label for="name">Название зала</label>
+            </div>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+            <select id="cinema" name="cinemaId" required class="form-select mb-3" aria-label="Кинотеатр">
+                <option th:each="cinema : ${cinemas}"
+                        th:value="${cinema.id}"
+                        th:text="${cinema.name}"
+                        th:selected="${cinema.id} == ${hall.cinema.id}"></option>
+            </select>
+
+            <div class="form-floating col-12 mb-3">
+                <input type="number" min="1" class="form-control" id="rows" name="rows" placeholder="Количество рядов"
+                       required th:value="rows" th:disabled="${#lists.size(sessionsByThisHall) > 0}">
+                <label for="rows">Количество рядов</label>
+            </div>
+
+            <div class="form-floating col-12 mb-3">
+                <input type="number" min="1" class="form-control" id="columns" name="columns"
+                       placeholder="Количество мест в ряду"
+                       required th:value="columns" th:disabled="${#lists.size(sessionsByThisHall) > 0}">
+                <label for="columns">Количество мест в ряду</label>
+            </div>
+
+            <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+        </form>
+
+        <div>
+            <h2>Текущая схема зала</h2>
+            <div th:each="entry : ${seatsGroupedByRow}">
+                <div class="seat-row">
+                    <span class="seat-row-label" th:text="'Ряд ' + ${entry.key}"></span>
+                    <div th:each="seat : ${entry.value}">
+                        <div class="seat" th:text="${seat.seatNumber}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#authorization.expression('hasRole(''ROLE_Менеджер'')')}">
+        <h1 th:text="'Изменить зал «' + ${hall.name} + '»'">Изменение зала</h1>
+        <form th:action="@{/halls/{id}(id=${hall.id})}" th:object="${hall}" method="post">
+            <input type="hidden" name="_method" value="PUT">
+
+            <div class="form-floating col-12 mb-3">
+                <input type="text" class="form-control" id="name1" th:field="*{name}" placeholder="Название зала"
+                       required>
+                <label for="name1">Название зала</label>
+            </div>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+            <select id="cinema1" name="cinemaId" required class="form-select mb-3" aria-label="Кинотеатр">
+                <option th:each="cinema : ${cinemasByManager}"
+                        th:value="${cinema.id}"
+                        th:text="${cinema.name}"
+                        th:selected="${cinema.id} == ${hall.cinema.id}"></option>
+            </select>
+
+            <div class="form-floating col-12 mb-3">
+                <input type="number" min="1" class="form-control" id="rows1" name="rows" placeholder="Количество рядов"
+                       required th:value="rows" th:disabled="${#lists.size(sessionsByThisHall) > 0}">
+                <label for="rows1">Количество рядов</label>
+            </div>
+
+            <div class="form-floating col-12 mb-3">
+                <input type="number" min="1" class="form-control" id="columns1" name="columns"
+                       placeholder="Количество мест в ряду"
+                       required th:value="columns" th:disabled="${#lists.size(sessionsByThisHall) > 0}">
+                <label for="columns1">Количество мест в ряду</label>
+            </div>
+
+            <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+        </form>
+
+        <div>
+            <h2>Текущая схема зала</h2>
+            <div th:each="entry : ${seatsGroupedByRow}">
+                <div class="seat-row">
+                    <span class="seat-row-label" th:text="'Ряд ' + ${entry.key}"></span>
+                    <div th:each="seat : ${entry.value}">
+                        <div class="seat" th:text="${seat.seatNumber}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

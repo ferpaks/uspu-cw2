@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение фильма')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Изменить фильм</h1>
+    <form th:action="@{/movies/{linkName}(linkName=${movie.linkTitle})}" th:object="${movie}" method="post"
+          class="d-flex flex-column justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="PUT">
+
+        <div class="form-floating col-12 mb-3">
+            <input type="text" id="title" class="form-control" th:field="*{title}" required/>
+            <label for="title">Название:</label>
+        </div>
+
+        <div class="form-floating col-12 mb-3">
+            <input type="text" id="linkTitle" class="form-control" th:field="*{linkTitle}" required/>
+            <label for="linkTitle">Текст ссылки:</label>
+        </div>
+
+        <div class="form-floating col-12 mb-3">
+            <textarea id="description" class="form-control" th:field="*{description}" required></textarea>
+            <label for="description">Описание</label>
+        </div>
+
+        <!--<span th:text="${movie.duration.toMinutes()}"></span>-->
+        <div class="form-floating col-12 mb-3">
+            <input type="number" min="1" class="form-control" id="duration" th:field="*{duration}" step="1" required th:value="${movie.duration.toMinutes()}" th:placeholder="${movie.duration.toMinutes()}"/>
+            <label for="duration">Продолжительность (в минутах)</label>
+        </div>
+
+        <label>Жанры:</label>
+        <div th:each="genre : ${allGenres}" class="form-check mb-3 w-100 text-start">
+            <input type="checkbox" th:field="${movie.genres}" th:id="${genre.id}" th:name="genreIds" th:value="${genre.id}" th:checked="${movie.genres.contains(genre)}"/>
+            <label th:for="${genre.id}" th:text="${genre.name}" ></label>
+        </div>
+
+        <label for="rating">Рейтинг:</label>
+        <select id="rating" name="rating" required class="form-select mb-3" aria-label="Возрастной рейтинг">
+            <option th:each="rating : ${allRatings}" th:value="${rating}" th:text="${rating.name}" th:selected="${rating == movie.rating}"></option>
+        </select>
+
+        <!--<label for="posterFile">Загрузить новый постер:</label>
+        <input type="file" id="posterFile" name="posterFile" accept="image/*"/>
+
+        <label for="existingPoster">Выбрать существующий постер:</label>
+        <select id="existingPoster" th:field="*{posterUrl}">
+            <option value="">-- Выберите файл --</option>
+            <option th:each="poster : ${availablePosters}" th:value="${poster}"
+                    th:text="${#strings.substring(poster, poster.lastIndexOf('/') + 1)}"></option>
+        </select>-->
+
+        <div class="form-floating col-12 mb-3">
+            <input type="number" min="0" class="form-control" id="basePriceInRubles" th:field="*{basePriceInRubles}"
+                   step="0.01" required/>
+            <label for="basePriceInRubles">Цена в рублях</label>
+        </div>
+
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+    </form>
+</main>
+<div th:insert="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

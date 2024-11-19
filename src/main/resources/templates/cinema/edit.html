@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение кинотеатра')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Изменить кинотеатр</h1>
+    <form th:action="@{/cinemas/{linkname}(linkname=${cinema.getLinkName()})}" th:object="${cinema}" method="post"
+          class="d-flex flex-column justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="PUT">
+
+        <div class="form-floating col-12 mb-3">
+            <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Название кинотеатра"
+                   required>
+            <label for="name">Название кинотеатра</label>
+        </div>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{linkName}"></div>
+
+        <div class="form-floating col-12 mb-3">
+            <input type="text" class="form-control" id="linkName" th:field="*{linkName}" placeholder="Адрес ссылки"
+                   required>
+            <label for="linkName">Адрес ссылки</label>
+        </div>
+        <div th:if="${#fields.hasErrors('linkName')}" th:errors="*{linkName}"></div>
+
+        <div class="input-group mb-3 col-lg-6">
+            <span class="d-flex input-group-text col-3 col-lg-2 justify-content-end">Адрес</span>
+            <select id="address" name="addressId" required class="form-select" aria-label="Адрес">
+                <option th:each="address : ${addresses}" th:value="${address.id}"
+                        th:text="${address.city.name + ', ' + address.street.type.shortName + ' ' + address.street.name + ', ' + address.house}"></option>
+            </select>
+        </div>
+
+        <div class="input-group mb-3 col-lg-6">
+            <span class="d-flex input-group-text col-3 col-lg-2 justify-content-end">Менеджер</span>
+            <select id="manager" name="managerId" required class="form-select" aria-label="Менеджер">
+                <option th:each="manager : ${managers}" th:value="${manager.id}" th:text="${manager.username}"></option>
+            </select>
+        </div>
+
+
+        <div class="input-group mb-3 col-lg-6">
+            <span class="d-flex input-group-text col-3 col-lg-2 justify-content-end">Статус</span>
+            <select id="status" th:field="*{status}" required class="form-select" aria-label="Статус">
+                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status.name}"></option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

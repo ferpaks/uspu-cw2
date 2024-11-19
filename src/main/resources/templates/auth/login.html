@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход в аккаунт</title>
+    <link th:replace="~{fragments/bootstrap-css :: link}">
+    <script th:replace="~{fragments/bootstrap-js :: script}"></script>
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main>
+    <div class="form-container">
+        <h1 class="mb-4 text-center">Вход в аккаунт</h1>
+
+        <!-- Сообщение об ошибке, если логин неудачный -->
+        <div th:if="${param.error}" style="color: red;">
+            <p>Неправильное имя пользователя или пароль</p>
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Имя пользователя" required>
+                <label for="username">Имя пользователя</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Пароль" required>
+                <label for="password">Пароль</label>
+            </div>
+            <div class="d-flex gap-2 justify-content-center py-5">
+                <input class="btn btn-primary d-inline-flex align-items-center" type="submit"
+                       value="Войти">
+                <a th:href="@{/register}" class="btn btn-outline-secondary d-inline-flex align-items-center">
+                    Зарегистрироваться
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

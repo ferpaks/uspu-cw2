@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Изменение сеанса')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Редактировать сеанс</h1>
+    <form th:action="@{/sessions/{id}(id=${sessionData.id})}" th:object="${sessionData}" method="post">
+        <input type="hidden" name="_method" value="PUT">
+
+        <div class="mb-3">
+            <label for="movieId">Фильм:</label>
+            <select id="movieId" name="movieId" required th:field="*{movie}" class="form-select">
+                <option th:each="movie : ${movies}" th:value="${movie.id}" th:text="${movie.title}"
+                        th:if="${movie.id == sessionData.movie.id}" selected></option>
+                <option th:each="movie : ${movies}" th:value="${movie.id}" th:text="${movie.title}"
+                        th:unless="${movie.id == sessionData.movie.id}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="hallId">Зал:</label>
+            <select id="hallId" name="hallId" required class="form-select">
+                <option th:each="hall : ${halls}" th:value="${hall.id}"
+                        th:text="${'Кинотеатр «' + hall.cinema.name + '», ' + hall.name}"
+                        th:selected="${sessionData.hall.id == hall.id}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="sessionStartTime">Время начала сеанса:</label>
+            <input type="datetime-local" id="sessionStartTime" th:field="*{sessionStartTime}"
+                   th:value="${sessionData.sessionStartTime.format(formatter)}" required
+                   class="form-control">
+        </div>
+
+        <div class="text-center">
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">Изменить</button>
+        </div>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+<script>
+    // Если выбранное значение в datetime-local меньше текущей даты-времени, то обнуляет поле и выводит alert()
+    // Скрипт запустится после загрузки страницы (DOMContentLoaded)
+    document.addEventListener('DOMContentLoaded', function () {
+        const sessionStartTimeInput = document.getElementById('sessionStartTime');
+
+        sessionStartTimeInput.addEventListener('change', function () {
+            const now = new Date();
+            const selectedDateTime = new Date(sessionStartTimeInput.value);
+
+            now.setHours(0, 0, 0, 0);
+            selectedDateTime.setHours(0, 0, 0, 0);
+
+            if (selectedDateTime < now) {
+                alert("Выбранная дата не может быть меньше текущей!");
+
+                // Форматируем текущую дату в локальную временную зону без учета времени
+                const offset = now.getTimezoneOffset() * 60000; // Разница в миллисекундах
+                const localDate = new Date(now - offset).toISOString().slice(0, 10); // Получаем только дату (YYYY-MM-DD)
+
+                sessionStartTimeInput.value = localDate + 'T00:00'; // Устанавливаем дату с временем 00:00
+            }
+        });
+    });
+</script>
+</body>
+</html>

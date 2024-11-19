@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Информация об улице')}"></head>
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Информация об улице</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Город</th>
+            <th>Название</th>
+            <th>Тип улицы</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a th:href="@{/cities/{id}(id=${street.city.id})}" th:text="${street.city.name}">Название города</a>
+            </td>
+            <td th:text="${street.name}">Название улицы</td>
+            <td><a th:href="@{/street-types/{id}(id=${street.type.id})}" th:text="${street.type.fullName}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/streets/{id}(id=${street.id})}" method="POST" class="gap-2 d-flex justify-content-center align-items-center">
+        <input type="hidden" name="_method" value="DELETE">
+        <a th:href="@{/streets/{id}/edit(id=${street.id})}" class="btn btn-primary">Изменить</a>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+    </form>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/html-head :: head('Информация о типе улицы')}"></head>
+
+<body>
+<div th:replace="~{fragments/html-header :: header}"></div>
+<main class="container">
+    <h1>Информация о типе улицы</h1>
+
+    <div th:if="${streetType == null}">
+        <p>Тип улицы не найден.</p>
+    </div>
+
+    <div th:if="${streetType != null}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Полное название</th>
+                <th>Сокращённое название</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${streetType.fullName}"></td>
+                <td th:text="${streetType.shortName}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form th:action="@{/street-types/{id}(id=${streetType.id})}" method="POST" class="gap-2 d-flex justify-content-center align-items-center">
+            <input type="hidden" name="_method" value="DELETE">
+            <a th:href="@{/street-types/{id}/edit(id=${streetType.id})}" class="btn btn-primary">Изменить</a>
+            <button type="submit" class="btn btn-danger">Удалить</button>
+        </form>
+    </div>
+</main>
+<div th:replace="~{fragments/html-footer :: footer}"></div>
+</body>
+</html>

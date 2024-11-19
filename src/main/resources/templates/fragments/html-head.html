@@ -1,0 +1,33 @@
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title}">Default Title</title>
+    <link th:replace="~{fragments/bootstrap-css :: link}">
+    <style th:replace="~{fragments/css-style :: style}"></style>
+    <style>
+        .seat-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .seat-row-label {
+            margin-right: 15px;
+            font-weight: bold;
+            width: 60px;
+        }
+
+        .seat {
+            width: 30px;
+            height: 30px;
+            margin: 2px;
+            background-color: #d3d3d3;
+            display: inline-block;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+            border: 1px solid #000;
+        }
+    </style>
+    <script th:replace="~{fragments/bootstrap-js :: script}"></script>
+    <script th:replace="~{fragments/js-script :: script}"></script>
+</head>
